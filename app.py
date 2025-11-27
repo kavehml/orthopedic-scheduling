@@ -13,7 +13,19 @@ app = Flask(__name__)
 CORS(app)
 
 # Global schedule data instance
-schedule_data = ScheduleData()
+# Initialize with error handling for cloud deployment
+try:
+    schedule_data = ScheduleData()
+except Exception as e:
+    print(f"Error initializing ScheduleData: {e}")
+    import traceback
+    traceback.print_exc()
+    # Create empty instance as fallback
+    from models import ScheduleData
+    schedule_data = ScheduleData()
+    schedule_data.residents = []
+    schedule_data.blocks = []
+    schedule_data.assignments = []
 
 # Check if rotation_constraints.json exists - if so, always use it (force reinitialize blocks)
 if os.path.exists("rotation_constraints.json"):
