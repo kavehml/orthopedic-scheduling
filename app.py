@@ -98,6 +98,11 @@ def index():
     """Serve main page"""
     return render_template('index.html')
 
+@app.route('/health')
+def health():
+    """Health check endpoint for Railway"""
+    return jsonify({"status": "ok", "message": "Application is running"}), 200
+
 
 @app.route('/api/config', methods=['GET'])
 def get_config():
