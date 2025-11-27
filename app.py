@@ -12,32 +12,79 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Global schedule data instance
-# Initialize with error handling for cloud deployment
-print("=" * 50)
-print("Initializing ScheduleData...")
-print("=" * 50)
+# Global schedule data instance - initialize as None first
+schedule_data = None
+
+# Initialize with comprehensive error handling for cloud deployment
+def initialize_app():
+    """Initialize the application data with full error handling"""
+    global schedule_data
+    print("=" * 50)
+    print("Initializing ScheduleData...")
+    print("=" * 50)
+    try:
+        schedule_data = ScheduleData()
+        print(f"✓ ScheduleData initialized successfully")
+        print(f"  - Residents: {len(schedule_data.residents)}")
+        print(f"  - Blocks: {len(schedule_data.blocks)}")
+        print(f"  - Assignments: {len(schedule_data.assignments)}")
+    except Exception as e:
+        print(f"✗ Error initializing ScheduleData: {e}")
+        import traceback
+        traceback.print_exc()
+        # Create empty instance as fallback
+        try:
+            from models import ScheduleData
+            schedule_data = ScheduleData()
+            schedule_data.residents = []
+            schedule_data.blocks = []
+            schedule_data.assignments = []
+            print("✓ Created fallback empty ScheduleData instance")
+        except Exception as e2:
+            print(f"✗ Critical: Could not create fallback ScheduleData: {e2}")
+            # Last resort - create minimal structure
+            from dataclasses import dataclass
+            from typing import List
+            @dataclass
+            class MinimalResident:
+                id: str
+                name: str
+            @dataclass  
+            class MinimalBlock:
+                id: str
+            class MinimalScheduleData:
+                def __init__(self):
+                    self.residents: List = []
+                    self.blocks: List = []
+                    self.assignments: List = []
+                    self.config = {"program": {"blocks_per_year": 13, "program_years": 5}}
+            schedule_data = MinimalScheduleData()
+            print("✓ Created minimal fallback structure")
+
+# Run initialization
 try:
-    schedule_data = ScheduleData()
-    print(f"✓ ScheduleData initialized successfully")
-    print(f"  - Residents: {len(schedule_data.residents)}")
-    print(f"  - Blocks: {len(schedule_data.blocks)}")
-    print(f"  - Assignments: {len(schedule_data.assignments)}")
+    initialize_app()
 except Exception as e:
-    print(f"✗ Error initializing ScheduleData: {e}")
+    print(f"✗ CRITICAL: Failed to initialize app: {e}")
     import traceback
     traceback.print_exc()
-    # Create empty instance as fallback
-    from models import ScheduleData
-    schedule_data = ScheduleData()
-    schedule_data.residents = []
-    schedule_data.blocks = []
-    schedule_data.assignments = []
-    print("✓ Created fallback empty ScheduleData instance")
+    # Ensure schedule_data exists even if initialization completely fails
+    if schedule_data is None:
+        class EmergencyScheduleData:
+            def __init__(self):
+                self.residents = []
+                self.blocks = []
+                self.assignments = []
+                self.config = {"program": {"blocks_per_year": 13, "program_years": 5}}
+        schedule_data = EmergencyScheduleData()
 
 # Check if rotation_constraints.json exists - if so, always use it (force reinitialize blocks)
-try:
-    if os.path.exists("rotation_constraints.json"):
+# Wrap in try-except to prevent crashes during initialization
+if schedule_data is not None:
+    try:
+        print("Checking for rotation_constraints.json...")
+        if os.path.exists("rotation_constraints.json"):
+            print("✓ Found rotation_constraints.json")
         # Load residents from data.json if it exists
         try:
             with open("data.json", 'r') as f:
@@ -104,21 +151,42 @@ try:
         else:
             print("Warning: No rotations found in rotation_constraints.json")
     else:
+        print("Note: rotation_constraints.json not found, loading from data.json if available")
         # No rotation constraints - load normally
         try:
             schedule_data.load("data.json")
+            print("✓ Loaded data from data.json")
         except FileNotFoundError:
             print("Note: No data.json found, using default initialization")
             pass
+        except Exception as e:
+            print(f"Warning: Error loading data.json: {e}")
+            pass
+    except Exception as e:
+        print(f"✗ Error during app initialization: {e}")
+        import traceback
+        traceback.print_exc()
+        # Continue with whatever we have
+        print("⚠ Continuing with partial initialization...")
+        # Ensure we have at least empty lists
+        if schedule_data is not None:
+            if not hasattr(schedule_data, 'residents') or schedule_data.residents is None:
+                schedule_data.residents = []
+            if not hasattr(schedule_data, 'blocks') or schedule_data.blocks is None:
+                schedule_data.blocks = []
+            if not hasattr(schedule_data, 'assignments') or schedule_data.assignments is None:
+                schedule_data.assignments = []
 except Exception as e:
-    print(f"✗ Error during app initialization: {e}")
+    print(f"✗ CRITICAL: Error in post-initialization: {e}")
     import traceback
     traceback.print_exc()
-    # Continue with whatever we have
-    print("⚠ Continuing with partial initialization...")
 
 print("=" * 50)
 print("App initialization complete!")
+if schedule_data is not None:
+    print(f"Final state - Residents: {len(schedule_data.residents)}, Blocks: {len(schedule_data.blocks)}, Assignments: {len(schedule_data.assignments)}")
+else:
+    print("WARNING: schedule_data is None!")
 print("=" * 50)
 
 
@@ -137,12 +205,14 @@ def index():
 def health():
     """Health check endpoint for Railway"""
     try:
+        if schedule_data is None:
+            return jsonify({"status": "error", "message": "schedule_data not initialized"}), 500
         return jsonify({
             "status": "ok", 
             "message": "Application is running",
-            "residents_count": len(schedule_data.residents),
-            "blocks_count": len(schedule_data.blocks),
-            "assignments_count": len(schedule_data.assignments)
+            "residents_count": len(schedule_data.residents) if hasattr(schedule_data, 'residents') else 0,
+            "blocks_count": len(schedule_data.blocks) if hasattr(schedule_data, 'blocks') else 0,
+            "assignments_count": len(schedule_data.assignments) if hasattr(schedule_data, 'assignments') else 0
         }), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
