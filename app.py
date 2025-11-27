@@ -19,11 +19,13 @@ schedule_data = None
 def initialize_app():
     """Initialize the application data with full error handling"""
     global schedule_data
+    # Import ScheduleData here to avoid UnboundLocalError
+    from models import ScheduleData as ScheduleDataClass
     print("=" * 50)
     print("Initializing ScheduleData...")
     print("=" * 50)
     try:
-        schedule_data = ScheduleData()
+        schedule_data = ScheduleDataClass()
         print(f"✓ ScheduleData initialized successfully")
         print(f"  - Residents: {len(schedule_data.residents)}")
         print(f"  - Blocks: {len(schedule_data.blocks)}")
@@ -34,8 +36,7 @@ def initialize_app():
         traceback.print_exc()
         # Create empty instance as fallback
         try:
-            from models import ScheduleData
-            schedule_data = ScheduleData()
+            schedule_data = ScheduleDataClass()
             schedule_data.residents = []
             schedule_data.blocks = []
             schedule_data.assignments = []
