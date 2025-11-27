@@ -85,83 +85,83 @@ if schedule_data is not None:
         print("Checking for rotation_constraints.json...")
         if os.path.exists("rotation_constraints.json"):
             print("✓ Found rotation_constraints.json")
-        # Load residents from data.json if it exists
-        try:
-            with open("data.json", 'r') as f:
-                data = json.load(f)
-            # Load residents (but don't reinitialize them) - handle old format
-            residents_data = data.get("residents", [])
-            schedule_data.residents = []
-            current_year = datetime.now().year
-            for r in residents_data:
-                # Handle backward compatibility: old format had 'year' instead of 'program_year' and 'entry_year'
-                if "entry_year" not in r:
-                    # Old format - estimate entry year based on program year
-                    program_year = r.get("program_year") or r.get("year", 1)
-                    r["entry_year"] = current_year - (program_year - 1)
-                if "program_year" not in r and "year" in r:
-                    r["program_year"] = r["year"]
-                    del r["year"]
-                # Handle missing specialty field
-                if "specialty" not in r:
-                    r["specialty"] = "Undecided"
-                schedule_data.residents.append(Resident(**r))
-            # Clear assignments since blocks will change
-            schedule_data.assignments = []
-        except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
-            # No data file or invalid data - residents already initialized in __init__
-            print(f"Note: Could not load data.json: {e}")
-            pass
-        
-        # Ensure we have the correct number of residents for all years
-        try:
-            schedule_data.ensure_residents_for_all_years()
-        except Exception as e:
-            print(f"Warning: Could not ensure residents for all years: {e}")
-        
-        # Force reinitialize BLOCKS ONLY with rotation constraints
-        schedule_data.blocks = []  # Clear old blocks
-        # Reinitialize blocks (but preserve residents)
-        rotation_constraints = schedule_data._load_rotation_constraints()
-        rotations = rotation_constraints.get("rotations", {})
-        if rotations:
-            blocks_per_year = schedule_data.config["program"]["blocks_per_year"]
-            program_years = schedule_data.config["program"]["program_years"]
-            current_year = datetime.now().year
-            block_id = 1
+            # Load residents from data.json if it exists
+            try:
+                with open("data.json", 'r') as f:
+                    data = json.load(f)
+                # Load residents (but don't reinitialize them) - handle old format
+                residents_data = data.get("residents", [])
+                schedule_data.residents = []
+                current_year = datetime.now().year
+                for r in residents_data:
+                    # Handle backward compatibility: old format had 'year' instead of 'program_year' and 'entry_year'
+                    if "entry_year" not in r:
+                        # Old format - estimate entry year based on program year
+                        program_year = r.get("program_year") or r.get("year", 1)
+                        r["entry_year"] = current_year - (program_year - 1)
+                    if "program_year" not in r and "year" in r:
+                        r["program_year"] = r["year"]
+                        del r["year"]
+                    # Handle missing specialty field
+                    if "specialty" not in r:
+                        r["specialty"] = "Undecided"
+                    schedule_data.residents.append(Resident(**r))
+                # Clear assignments since blocks will change
+                schedule_data.assignments = []
+            except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+                # No data file or invalid data - residents already initialized in __init__
+                print(f"Note: Could not load data.json: {e}")
+                pass
             
-            for year_offset in range(program_years):
-                academic_year = current_year + year_offset
-                for block_num in range(1, blocks_per_year + 1):
-                    for rotation_name, rotation_info in rotations.items():
-                        site = rotation_info.get("site", "Unknown")
-                        min_cap = rotation_info.get("min_residents_per_block", 1)
-                        max_cap = rotation_info.get("max_residents_per_block", 1)
-                        
-                        schedule_data.blocks.append(Block(
-                            id=f"B{block_id:04d}",
-                            block_number=block_num,
-                            year=academic_year,
-                            rotation=rotation_name,
-                            site=site,
-                            min_capacity=min_cap,
-                            max_capacity=max_cap
-                        ))
-                        block_id += 1
+            # Ensure we have the correct number of residents for all years
+            try:
+                schedule_data.ensure_residents_for_all_years()
+            except Exception as e:
+                print(f"Warning: Could not ensure residents for all years: {e}")
+            
+            # Force reinitialize BLOCKS ONLY with rotation constraints
+            schedule_data.blocks = []  # Clear old blocks
+            # Reinitialize blocks (but preserve residents)
+            rotation_constraints = schedule_data._load_rotation_constraints()
+            rotations = rotation_constraints.get("rotations", {})
+            if rotations:
+                blocks_per_year = schedule_data.config["program"]["blocks_per_year"]
+                program_years = schedule_data.config["program"]["program_years"]
+                current_year = datetime.now().year
+                block_id = 1
+                
+                for year_offset in range(program_years):
+                    academic_year = current_year + year_offset
+                    for block_num in range(1, blocks_per_year + 1):
+                        for rotation_name, rotation_info in rotations.items():
+                            site = rotation_info.get("site", "Unknown")
+                            min_cap = rotation_info.get("min_residents_per_block", 1)
+                            max_cap = rotation_info.get("max_residents_per_block", 1)
+                            
+                            schedule_data.blocks.append(Block(
+                                id=f"B{block_id:04d}",
+                                block_number=block_num,
+                                year=academic_year,
+                                rotation=rotation_name,
+                                site=site,
+                                min_capacity=min_cap,
+                                max_capacity=max_cap
+                            ))
+                            block_id += 1
+            else:
+                print("Warning: No rotations found in rotation_constraints.json")
         else:
-            print("Warning: No rotations found in rotation_constraints.json")
-    else:
-        print("Note: rotation_constraints.json not found, loading from data.json if available")
-        # No rotation constraints - load normally
-        try:
-            schedule_data.load("data.json")
-            print("✓ Loaded data from data.json")
-        except FileNotFoundError:
-            print("Note: No data.json found, using default initialization")
-            pass
-        except Exception as e:
-            print(f"Warning: Error loading data.json: {e}")
-            pass
+            print("Note: rotation_constraints.json not found, loading from data.json if available")
+            # No rotation constraints - load normally
+            try:
+                schedule_data.load("data.json")
+                print("✓ Loaded data from data.json")
+            except FileNotFoundError:
+                print("Note: No data.json found, using default initialization")
+                pass
+            except Exception as e:
+                print(f"Warning: Error loading data.json: {e}")
+                pass
     except Exception as e:
         print(f"✗ Error during app initialization: {e}")
         import traceback
@@ -176,10 +176,6 @@ if schedule_data is not None:
                 schedule_data.blocks = []
             if not hasattr(schedule_data, 'assignments') or schedule_data.assignments is None:
                 schedule_data.assignments = []
-except Exception as e:
-    print(f"✗ CRITICAL: Error in post-initialization: {e}")
-    import traceback
-    traceback.print_exc()
 
 print("=" * 50)
 print("App initialization complete!")
