@@ -58,6 +58,12 @@ def initialize_app():
                     self.blocks: List = []
                     self.assignments: List = []
                     self.config = {"program": {"blocks_per_year": 13, "program_years": 5}}
+                def _load_rotation_constraints(self):
+                    return {}
+                def ensure_residents_for_all_years(self):
+                    pass
+                def load(self, path):
+                    pass
             schedule_data = MinimalScheduleData()
             print("✓ Created minimal fallback structure")
 
@@ -76,6 +82,12 @@ except Exception as e:
                 self.blocks = []
                 self.assignments = []
                 self.config = {"program": {"blocks_per_year": 13, "program_years": 5}}
+            def _load_rotation_constraints(self):
+                return {}
+            def ensure_residents_for_all_years(self):
+                pass
+            def load(self, path):
+                pass
         schedule_data = EmergencyScheduleData()
 
 # Check if rotation_constraints.json exists - if so, always use it (force reinitialize blocks)
@@ -115,14 +127,18 @@ if schedule_data is not None:
             
             # Ensure we have the correct number of residents for all years
             try:
-                schedule_data.ensure_residents_for_all_years()
+                if hasattr(schedule_data, 'ensure_residents_for_all_years'):
+                    schedule_data.ensure_residents_for_all_years()
             except Exception as e:
                 print(f"Warning: Could not ensure residents for all years: {e}")
             
             # Force reinitialize BLOCKS ONLY with rotation constraints
             schedule_data.blocks = []  # Clear old blocks
             # Reinitialize blocks (but preserve residents)
-            rotation_constraints = schedule_data._load_rotation_constraints()
+            if hasattr(schedule_data, '_load_rotation_constraints'):
+                rotation_constraints = schedule_data._load_rotation_constraints()
+            else:
+                rotation_constraints = {}
             rotations = rotation_constraints.get("rotations", {})
             if rotations:
                 blocks_per_year = schedule_data.config["program"]["blocks_per_year"]
@@ -154,8 +170,9 @@ if schedule_data is not None:
             print("Note: rotation_constraints.json not found, loading from data.json if available")
             # No rotation constraints - load normally
             try:
-                schedule_data.load("data.json")
-                print("✓ Loaded data from data.json")
+                if hasattr(schedule_data, 'load'):
+                    schedule_data.load("data.json")
+                    print("✓ Loaded data from data.json")
             except FileNotFoundError:
                 print("Note: No data.json found, using default initialization")
                 pass
