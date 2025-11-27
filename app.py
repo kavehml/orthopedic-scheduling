@@ -117,7 +117,16 @@ def index():
 @app.route('/health')
 def health():
     """Health check endpoint for Railway"""
-    return jsonify({"status": "ok", "message": "Application is running"}), 200
+    try:
+        return jsonify({
+            "status": "ok", 
+            "message": "Application is running",
+            "residents_count": len(schedule_data.residents),
+            "blocks_count": len(schedule_data.blocks),
+            "assignments_count": len(schedule_data.assignments)
+        }), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 
 @app.route('/api/config', methods=['GET'])
