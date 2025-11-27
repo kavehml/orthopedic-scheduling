@@ -1,0 +1,56 @@
+﻿Constraints,,,,,,,,,,,
+,,,,,,,,,,,
+13 blocks per academic year,,,,,,,,,,,
+each block is 4 weeks,,,,,,,,,,,
+there are 5 years in orthopaedic surgery residency training,,,,,,,,,,,
+there are currently between 5-6 residents per year,,,,,,,,,,,
+"each of the below rotations have a cumulative upper limit, and minimum lower limit. additionally, each one has stipulations of how many residents should be on that rotations at once, and at which level.  For example, JGH-Trauma is always 1 resident, in the 3rd year of training.  ",,,,,,,,,,,
+"ideally, no 1 month blocks",,,,,,,,,,,
+R1s only get 5 blocks of Ortho,,,,,,,,,,,
+"No R4s on MGH Trauma P12-P13, R5s on MGH Trauma P12-P13",,,,,,,,,,,
+Hand rotation R4,,,,,,,,,,,
+"One elective period per year for R3-R4-R5, which cannot be in P2-P3",,,,,,,,,,,
+"Min 3 juniors (R1-R2-R3) at MGH at all times, but not all the same level (eg. not all R3s)",,,,,,,,,,,
+Min 2 MCH/Shriners block per year R2 to R5,,,,,,,,,,,
+R1 on MGH Trauma P3,,,,,,,,,,,
+R1 on MGH Spine P3,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,Notes,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,Number of Blocks Total at Graduation ,,Eligible Residents Available,,Accomodation of residents,
+these are the Rotations that residents rotate through,Rotation Label,,,,Min Residents at the site,Min # of blocks,Max # of blocks ,,Allowed if needed,Min,Max
+Jewish General Hospital Site,,,,,3,,,,,,
+,JGH-Arthro,,,,,2,3,R2,"R3,R4,R5",1,2
+,JGH-Foot,,,,,2,4,"R3,R4,R5",,1,2
+,JGH-Trauma,,,,,2,3,R3 ,,1,1
+Montreal General Hospital Site,,,,,8,,,,,,
+,MGH-Arthro,,,,,2,,"R3,R4,R5",,1,2
+,MGH/Sports,,,,,2,,"R1,R2,R3,R4,R5",,1,2
+,MGH/Spine,"always requires a junior (R2) with senior R4,or R5), 2 as junior and 2 as senior",,,,4,4,"R1,R2,R4",,2,2
+,MGH/Trauma,,,,,,,"R1,R2,R3,R4,R5",,2,4
+,MGH/Tumor,,,,,2,,"R4,R5",,1,2
+St Marys Hospital Site,,,,,3,,,,,,
+,SMH,,,,,3,,,"R1,R2,R3,R4,R5",2,5
+,,,,,,,,,,,
+Montreal Childrens Hospital Site/Shriners Hospital,,,,,04-Mar,,,,,,
+,MCH/Shriners,,,,,,,,"R1,R2,R3,R4,R5",3,5
+,,,,,,,,,,,
+"Off-Service, Plastic Surgery",,,,,,,,,,,
+,Hand,,,,,,,"R4, R5",,1,1
+Other,,,,,,,,,,,
+,Community,,,,,,,"R3, R4, R5",,,
+,Electives,,,,,,,"R3, R4, R5",,1,2
+,Research,,,,,,,"R3, R4, R5",,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+"How many block periods per year should it occupy (or which periods), All rotation run during every block of the year, excluding the constraints mentionned in the sheet. However, there may be specific constraints for single period rotations such as electives, research, Hand, Community. This would vary based on the availability of such rotations.",,,,,,,,,,,
+"The number of concurrent resident slots in each of those periods (min/max), in the sheet already. These values are stable for each period, within the constraints.",,,,,,,,,,,
+"Whether any rotations share the same block (e.g., Research vs Elective). All rotations can share the same blocks, but a resident cannot be on 2 rotations at once. Eg. JGH foot runs all 13 blocks of the year, so does SMH, but a resident can’t be on both rotations during the same block.",,,,,,,,,,,

@@ -1,0 +1,213 @@
+{
+  "rotations": {
+    "JGH-Arthro": {
+      "site": "Jewish General Hospital",
+      "min_blocks_total": 2,
+      "max_blocks_total": 3,
+      "eligible_years": [
+        2
+      ],
+      "allowed_if_needed": [
+        3,
+        4,
+        5
+      ],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "JGH-Foot": {
+      "site": "Jewish General Hospital",
+      "min_blocks_total": 2,
+      "max_blocks_total": 4,
+      "eligible_years": [
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "JGH-Trauma": {
+      "site": "Jewish General Hospital",
+      "min_blocks_total": 2,
+      "max_blocks_total": 3,
+      "eligible_years": [
+        3
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 1,
+      "special": "Always 1 resident, R3 only"
+    },
+    "MGH-Arthro": {
+      "site": "Montreal General Hospital",
+      "min_blocks_total": 2,
+      "max_blocks_total": null,
+      "eligible_years": [
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "MGH/Sports": {
+      "site": "Montreal General Hospital",
+      "min_blocks_total": 2,
+      "max_blocks_total": null,
+      "eligible_years": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "MGH/Spine": {
+      "site": "Montreal General Hospital",
+      "min_blocks_total": 4,
+      "max_blocks_total": 4,
+      "eligible_years": [
+        1,
+        2,
+        4
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 2,
+      "max_residents_per_block": 2,
+      "special": "Always requires a junior (R2) with senior (R4 or R5), 2 as junior and 2 as senior"
+    },
+    "MGH/Trauma": {
+      "site": "Montreal General Hospital",
+      "min_blocks_total": null,
+      "max_blocks_total": null,
+      "eligible_years": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 2,
+      "max_residents_per_block": 4
+    },
+    "MGH/Tumor": {
+      "site": "Montreal General Hospital",
+      "min_blocks_total": 2,
+      "max_blocks_total": null,
+      "eligible_years": [
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "SMH": {
+      "site": "St Marys Hospital",
+      "min_blocks_total": 3,
+      "max_blocks_total": null,
+      "eligible_years": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 2,
+      "max_residents_per_block": 5
+    },
+    "MCH/Shriners": {
+      "site": "Montreal Childrens Hospital/Shriners",
+      "min_blocks_total": null,
+      "max_blocks_total": null,
+      "eligible_years": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 3,
+      "max_residents_per_block": 5
+    },
+    "Hand": {
+      "site": "Off-Service, Plastic Surgery",
+      "min_blocks_total": null,
+      "max_blocks_total": null,
+      "eligible_years": [
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 1
+    },
+    "Community": {
+      "site": "Other",
+      "min_blocks_total": null,
+      "max_blocks_total": null,
+      "eligible_years": [
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "Electives": {
+      "site": "Other",
+      "min_blocks_total": null,
+      "max_blocks_total": null,
+      "eligible_years": [
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    },
+    "Research": {
+      "site": "Other",
+      "min_blocks_total": null,
+      "max_blocks_total": null,
+      "eligible_years": [
+        3,
+        4,
+        5
+      ],
+      "allowed_if_needed": [],
+      "min_residents_per_block": 1,
+      "max_residents_per_block": 2
+    }
+  },
+  "site_minimums": {
+    "Jewish General Hospital": 3,
+    "Montreal Childrens Hospital/Shriners": 3,
+    "Montreal General Hospital": 8,
+    "St Marys Hospital": 3
+  },
+  "global_constraints": {
+    "elective_not_in_p2_p3": true,
+    "min_juniors_at_mgh": 3,
+    "min_mch_blocks_r2_to_r5_per_year": 2,
+    "one_elective_per_year_r3_to_r5": true,
+    "r1_ortho_blocks_only": 5
+  },
+  "period_constraints": {
+    "no_r4_mgh_trauma_p12_p13": true,
+    "only_r5_mgh_trauma_p12_p13": true,
+    "r1_mgh_spine_p3": true,
+    "r1_mgh_trauma_p3": true
+  }
+}

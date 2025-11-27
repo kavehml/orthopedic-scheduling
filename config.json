@@ -1,0 +1,18 @@
+{
+  "program": {
+    "blocks_per_year": 13,
+    "program_years": 5
+  },
+  "optimization": {
+    "objectives": [
+      "balance_workload",
+      "minimize_conflicts",
+      "ensure_coverage"
+    ],
+    "constraints": {
+      "max_blocks_per_resident_per_year": 13,
+      "min_blocks_per_resident_per_year": 10,
+      "allow_same_site_consecutive": true
+    }
+  }
+}

@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Flask
+instance/
+.webassets-cache
+
+# Data files (keep structure but ignore large data)
+# data.json  # Uncomment if you don't want to track data.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Excel/CSV backups
+~$*.xlsx
+*.xlsx.bak
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+

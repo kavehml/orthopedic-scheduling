@@ -1,0 +1,23 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud. It follows the same syntax as .gitignore
+
+.git/
+.gitignore
+.gcloudignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+~$*.xlsx
+
