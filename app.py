@@ -392,9 +392,10 @@ if __name__ == '__main__':
     os.makedirs('templates', exist_ok=True)
     os.makedirs('static', exist_ok=True)
     
-    # Get port from environment variable (for Cloud Run) or use default
+    # Get port from environment variable (for Cloud Run/Railway) or use default
     port = int(os.environ.get('PORT', 5000))
-    host = os.environ.get('HOST', '127.0.0.1')
+    # For Railway/Cloud, bind to 0.0.0.0 to accept external connections
+    host = os.environ.get('HOST', '0.0.0.0' if os.environ.get('PORT') else '127.0.0.1')
     debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     
     print("=" * 50)
