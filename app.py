@@ -14,10 +14,17 @@ CORS(app)
 
 # Global schedule data instance
 # Initialize with error handling for cloud deployment
+print("=" * 50)
+print("Initializing ScheduleData...")
+print("=" * 50)
 try:
     schedule_data = ScheduleData()
+    print(f"✓ ScheduleData initialized successfully")
+    print(f"  - Residents: {len(schedule_data.residents)}")
+    print(f"  - Blocks: {len(schedule_data.blocks)}")
+    print(f"  - Assignments: {len(schedule_data.assignments)}")
 except Exception as e:
-    print(f"Error initializing ScheduleData: {e}")
+    print(f"✗ Error initializing ScheduleData: {e}")
     import traceback
     traceback.print_exc()
     # Create empty instance as fallback
@@ -26,6 +33,7 @@ except Exception as e:
     schedule_data.residents = []
     schedule_data.blocks = []
     schedule_data.assignments = []
+    print("✓ Created fallback empty ScheduleData instance")
 
 # Check if rotation_constraints.json exists - if so, always use it (force reinitialize blocks)
 try:
@@ -103,16 +111,27 @@ try:
             print("Note: No data.json found, using default initialization")
             pass
 except Exception as e:
-    print(f"Error during app initialization: {e}")
+    print(f"✗ Error during app initialization: {e}")
     import traceback
     traceback.print_exc()
     # Continue with whatever we have
+    print("⚠ Continuing with partial initialization...")
+
+print("=" * 50)
+print("App initialization complete!")
+print("=" * 50)
 
 
 @app.route('/')
 def index():
     """Serve main page"""
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        print(f"Error rendering index.html: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Error loading page: {str(e)}", 500
 
 @app.route('/health')
 def health():
